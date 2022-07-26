@@ -1,56 +1,49 @@
-
-
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'package:http/http.dart';
-import 'package:news_app/main.dart';
-import 'package:flutter/widgets.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:news_app/DetailsPage.dart';
 
-class FristScreen extends StatefulWidget {
-  const FristScreen({Key? key}) : super(key: key);
+class FirstScreen extends StatefulWidget {
+  List? value;
+  FirstScreen({Key? key, required this.value}) : super(key: key);
 
   @override
-  State<FristScreen> createState() => _FristScreenState();
+  State<FirstScreen> createState() => _FirstScreenState(this.value);
 }
 
-class _FristScreenState extends State<FristScreen> {
-  var jd,res;
-  getData() async {
-    var response = await get(Uri.parse(
-        'https://newsdata.io/api/1/news?apikey=pub_9539cf9b1b4d6bf18cab30a55b3bd0a58ac7&language=en'));
-    setState(() {
-      jd = jsonDecode(response.body);
-      res = jd['results'];
-      // for (var i = 0; i < res.length; i++) {
-      //   if (res[i]['description'] != null) {
-      //     dataa = res[i];
-      //   }
-      // }
-    });
-    print(jd);
-  }
+class _FirstScreenState extends State<FirstScreen> {
+  List? value;
 
-  void initState() {
-    super.initState();
-    getData();
-  }
+  _FirstScreenState(this.value);
   @override
   Widget build(BuildContext context) {
+    print(value);
+
     return Scaffold(
-       body: SafeArea(child: Column(
-         children: [
-           ElevatedButton(onPressed: (){
-                   Navigator.of(context).push(
-                     MaterialPageRoute(
-                       builder: (context) => MyHomePage(value: res),
-                       // builder: (context) => Jeni(),
-                     ),
-                   );
-                 }, child: const Text("Elevated Button"))
-           // Text("Check the latest news"),
-         ],
-       )),
-    );
+        body: SafeArea(
+      child: Container(
+          width: 420.w,
+          height: 900.h,
+          child: ListView.builder(
+              itemCount: value!.length,
+              itemBuilder: (BuildContext context, int index) {
+                return GestureDetector(
+                  onTap: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => DetailsPage(data: value![index]),
+                        // builder: (context) => Jeni(),
+                      ),
+                    );
+                  },
+                  child: Padding(
+                    padding: EdgeInsets.only(bottom: 38.h),
+                    child: SizedBox(
+                      width: 100.w, child: Text(value![index]['title']),
+                      // leading:Text("hello there")
+                    ),
+                  ),
+                );
+              })),
+    ));
   }
 }

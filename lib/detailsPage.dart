@@ -21,7 +21,7 @@ class _DetailsPageState extends State<DetailsPage> {
           children: [
             Text(data['title']),
             Text(data['description']),
-            Text(data['country'][0])
+            Text(data['content'])
           ],
         ),
       )),
