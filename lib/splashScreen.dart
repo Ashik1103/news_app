@@ -18,10 +18,10 @@ class _SplashScreenState extends State<SplashScreen> {
   var jd, res;
   getData() async {
     var response = await get(Uri.parse(
-        'https://newsapi.org/v2/everything?q=Apple&from=2022-07-24&sortBy=popularity&apiKey=093b0704ae6843c6ba8350df4ba0031e'));
+        'http://content.guardianapis.com/search?api-key=abc0a2ba-5a4e-471c-b74d-7419f67ca053&show-fields=webTitle,thumbnail,bodyText'));
     setState(() {
       jd = jsonDecode(response.body);
-      res = jd['articles'];
+      res = jd['response']['results'];
     });
   }
 
@@ -31,7 +31,7 @@ class _SplashScreenState extends State<SplashScreen> {
     getData();
     Timer(
       const Duration(seconds: 3),
-      () => Navigator.push(
+      () => Navigator.pushReplacement(
         context,
         MaterialPageRoute(
           builder: (context) => FirstScreen(value: res),
