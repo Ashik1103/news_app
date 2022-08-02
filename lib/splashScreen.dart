@@ -18,7 +18,7 @@ class _SplashScreenState extends State<SplashScreen> {
   var jd, res;
   getData() async {
     var response = await get(Uri.parse(
-        'http://content.guardianapis.com/search?api-key=abc0a2ba-5a4e-471c-b74d-7419f67ca053&show-fields=webTitle,thumbnail,bodyText'));
+        'http://content.guardianapis.com/search?page-size=15&api-key=abc0a2ba-5a4e-471c-b74d-7419f67ca053&show-fields=webTitle,thumbnail,bodyText'));
     setState(() {
       jd = jsonDecode(response.body);
       res = jd['response']['results'];

@@ -1,6 +1,10 @@
+import 'dart:async';
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:http/http.dart';
 import 'package:news_app/DetailsPage.dart';
 
 class FirstScreen extends StatefulWidget {
@@ -13,12 +17,28 @@ class FirstScreen extends StatefulWidget {
 
 class _FirstScreenState extends State<FirstScreen> {
   List? value;
+  String dropdownvalue="All";
 
+   var topic =['All','Sports','Political'];
+   
+   var jd, res;
+  getData() async {
+    var response = await get(Uri.parse(
+        'http://content.guardianapis.com/search?q=$dropdownvalue&-size=15&api-key=abc0a2ba-5a4e-471c-b74d-7419f67ca053&show-fields=webTitle,thumbnail,bodyText'));
+    setState(() {
+      jd = jsonDecode(response.body);
+      res = jd['response']['results'];
+    });
+  }
+
+  
 
   _FirstScreenState(this.value);
   @override
   Widget build(BuildContext context) {
-    
+    setState(() {
+      getData();
+    });
    
 
     return Scaffold(
@@ -32,23 +52,48 @@ class _FirstScreenState extends State<FirstScreen> {
               Padding(
                 padding: EdgeInsets.only(
                   top: 32.h,
-                  right: 190.w,
+                  left:20.w
+                  // right: 190.w,
                 ),
-                child: Text(
-                  "Latest News",
-                  style: GoogleFonts.poppins(
-                    textStyle: TextStyle(
-                      fontSize: 32.sp,
-                      fontWeight: FontWeight.w500,
-                      color: Colors.white,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      dropdownvalue,
+                      style: GoogleFonts.poppins(
+                        textStyle: TextStyle(
+                          fontSize: 32.sp,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.white,
+                        ),
+                      ),
                     ),
-                  ),
+                    // IconButton(onPressed: (){}, icon: Icon(Icons.filter,color: Colors.white,))
+                    DropdownButton(
+                     
+                       icon: Icon(Icons.filter_1_outlined),
+                      items: topic.map((String items) {
+                return DropdownMenuItem(
+                  value: items,
+                  child: Text(items),
+                );
+              }).toList(),
+                onChanged: (String? newValue) {
+                setState(() {
+                  dropdownvalue = newValue!;
+                  // print(dropdownvalue);
+                  getData();
+                });
+                },
+                
+                )
+                  ],
                 ),
               ),
               SizedBox(height: 24.h),
               Expanded(
                 child: ListView.builder(
-                    itemCount: value!.length,
+                    itemCount: res!.length,
                     itemBuilder: (BuildContext context, int index) {
                       
                       return GestureDetector(
@@ -56,7 +101,7 @@ class _FirstScreenState extends State<FirstScreen> {
                           Navigator.of(context).push(
                             MaterialPageRoute(
                               builder: (context) =>
-                                  DetailsPage(value: value![index]),
+                                  DetailsPage(value: res![index]),
                               // builder: (context) => Jeni(),
                             ),
                           );
@@ -79,12 +124,12 @@ class _FirstScreenState extends State<FirstScreen> {
                                     borderRadius: BorderRadius.circular(16),
                                     
                                     child:
-                                    value![index]['fields']['thumbnail']==null?
+                                    res![index]['fields']['thumbnail']==null?
                                     Image.asset('assets/images/gnews.png',height: 165.h,
                                     width: 376.w,
                                     fit: BoxFit.fill,):
                                      Image.network(
-                                      value![index]['fields']['thumbnail'],
+                                      res![index]['fields']['thumbnail'],
                                       height: 195.h,
                                       width: 396.w,
                                       fit: BoxFit.fill,
@@ -95,7 +140,7 @@ class _FirstScreenState extends State<FirstScreen> {
                                   padding: EdgeInsets.only(
                                       left: 18.w, right: 10.w, top: 13.h),
                                   child: Text(
-                                    value![index]['webTitle'],
+                                    res![index]['webTitle'],
                                     style: GoogleFonts.poppins(
                                       textStyle: TextStyle(
                                         letterSpacing: 1.sp,
