@@ -106,8 +106,6 @@ class _FirstScreenState extends State<FirstScreen> {
                         child: Padding(
                           padding: EdgeInsets.only(bottom: 38.h),
                           child: Container(
-                            // color: Colors.pinkAccent,
-                            // color: Color(0xff1C1C1C),
                             width: 100.w,
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
