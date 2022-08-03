@@ -53,7 +53,6 @@ class _FirstScreenState extends State<FirstScreen> {
                 padding: EdgeInsets.only(
                   top: 32.h,
                   left:20.w
-                  // right: 190.w,
                 ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -68,7 +67,6 @@ class _FirstScreenState extends State<FirstScreen> {
                         ),
                       ),
                     ),
-                    // IconButton(onPressed: (){}, icon: Icon(Icons.filter,color: Colors.white,))
                     DropdownButton(
                      
                        icon: Icon(Icons.filter_1_outlined),
