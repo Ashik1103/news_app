@@ -116,7 +116,6 @@ class _FirstScreenState extends State<FirstScreen> {
                                 Padding(
                                   padding: EdgeInsets.only(
                                     left: 16.w,
-                                    // right: 16.w,
                                   ),
                                   child: ClipRRect(
                                     borderRadius: BorderRadius.circular(16),
