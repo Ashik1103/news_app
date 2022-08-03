@@ -100,7 +100,6 @@ class _FirstScreenState extends State<FirstScreen> {
                             MaterialPageRoute(
                               builder: (context) =>
                                   DetailsPage(value: res![index]),
-                              // builder: (context) => Jeni(),
                             ),
                           );
                         },
